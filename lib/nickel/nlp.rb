@@ -26,6 +26,7 @@ module Nickel
 
       extract_message
       correct_case
+      replace_hyphen
 
       @construct_interpreter = ConstructInterpreter.new(@construct_finder.constructs, @input_date)  # input_date only needed for wrappers
       @construct_interpreter.run
@@ -84,8 +85,20 @@ module Nickel
       orig = @query.split
       latest = @message.split
       orig.each_with_index do |original_word, j|
-        if i = latest.index(original_word.downcase)
+        if i = latest.index(original_word.gsub(/[,.;'`]/, '').downcase)
           latest[i] = original_word
+        end
+      end
+      @message = latest.join(' ')
+    end
+
+    def replace_hyphen
+      orig = @query.split
+      latest = @message.split
+      orig.each_with_index do |original_word, j|
+        if original_word =~ /-/ && original_word.gsub(/[,.;'`]/, '').downcase == "#{latest[j]}-#{latest[j+1]}"
+          latest[j] = original_word
+          latest.delete_at(j+1)
         end
       end
       @message = latest.join(' ')

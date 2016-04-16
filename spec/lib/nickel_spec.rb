@@ -47,6 +47,44 @@ describe Nickel do
       end
     end
 
+    context "when the query is 'call Jake's bakery at 11am'" do
+      let(:query) { "call Jake's bakery everyday at 11am" }
+      let(:run_date) { Time.local(2014, 2, 26) }
+
+      describe '#message' do
+        it "is 'call Jake's bakery'" do
+          expect(n.message).to eq "call Jake's bakery"
+        end
+      end
+
+      describe '#occurrences' do
+        it 'is daily at 11:00am' do
+          expect(n.occurrences).to match_array [
+            Nickel::Occurrence.new(type: :daily, interval: 1, start_date: Nickel::ZDate.new('20140226'), start_time: Nickel::ZTime.new('11'))
+          ]
+        end
+      end
+    end
+
+    context "when the query is 'send Jake's E-mail everyday at 11am'" do
+      let(:query) { "send Jake's E-mail everyday at 11am" }
+      let(:run_date) { Time.local(2014, 2, 26) }
+
+      describe '#message' do
+        it "is 'send Jake's E-mail'" do
+          expect(n.message).to eq "send Jake's E-mail"
+        end
+      end
+
+      describe '#occurrences' do
+        it 'is daily at 11:00am' do
+          expect(n.occurrences).to match_array [
+            Nickel::Occurrence.new(type: :daily, interval: 1, start_date: Nickel::ZDate.new('20140226'), start_time: Nickel::ZTime.new('11'))
+          ]
+        end
+      end
+    end
+
     context "when the query is 'guitar lessons every tuesday at 5pm'" do
       let(:query) { 'guitar lessons every tuesday at 5pm' }
       let(:run_date) { Time.local(2014, 2, 26) }
