@@ -25,7 +25,7 @@ module Nickel
       remove_unused_punctuation
       replace_backslashes
       run_spell_check
-      remove_unnecessary_words
+      #remove_unnecessary_words  # messing up strings
       standardize_days
       standardize_months
       standardize_numbers
